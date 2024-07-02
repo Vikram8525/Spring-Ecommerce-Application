@@ -22,7 +22,6 @@ public class User {
     private String pincode;
 
     
-    // Getters and Setters
     public int getUserId() {
         return userId;
     }

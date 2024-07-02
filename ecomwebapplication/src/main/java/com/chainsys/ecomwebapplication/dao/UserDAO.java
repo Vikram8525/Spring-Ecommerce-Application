@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.chainsys.ecomwebapplication.mapper.UserMapper;
 import com.chainsys.ecomwebapplication.model.User;
 
 @Repository
@@ -30,11 +31,9 @@ public class UserDAO {
         String insertUserQuery = "INSERT INTO users (user_id, user_name, user_email, password) VALUES (?, ?, ?, ?)";
         String updateWalletQuery = "UPDATE users SET wallet_balance = 100000 WHERE user_id = ?";
 
-        // Insert the new user
         int rowsInserted = jdbcTemplate.update(insertUserQuery, user.getUserId(), user.getUserName(),
                 user.getUserEmail(), user.getPassword());
 
-        // If the user was successfully added, update the wallet balance
         if (rowsInserted > 0) {
             int rowsUpdated = jdbcTemplate.update(updateWalletQuery, user.getUserId());
             return rowsUpdated > 0;
@@ -72,7 +71,6 @@ public class UserDAO {
         });
 
         try {
-            // Fetch user details from the database if not set
             if (user.getUserName() == null || user.getUserName().isEmpty() || user.getUserEmail() == null
                     || user.getUserEmail().isEmpty()) {
                 User dbUser = getUserDetailsFromDatabase(user.getUserId());
@@ -92,7 +90,7 @@ public class UserDAO {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getUserEmail()));
             message.setSubject("Welcome to our E-commerce Application");
 
-            // Construct the email body
+            
             StringBuilder emailBody = new StringBuilder();
             emailBody.append("Dear " + user.getUserName() + ",<br><br>");
             emailBody.append("Welcome to our E-commerce Application!<br><br>");
@@ -113,37 +111,12 @@ public class UserDAO {
 
     private User getUserDetailsFromDatabase(int userId) {
         String query = "SELECT user_name, user_email FROM users WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
-            String userName = rs.getString("user_name");
-            String userEmail = rs.getString("user_email");
-            return new User(userId, userName, userEmail, null); // assuming password is not needed here
-        }, userId);
+        return jdbcTemplate.queryForObject(query, new UserMapper(), userId);
     }
 
     public User getUserByIdAndPassword(int userId, String password) {
         String query = "SELECT user_id, user_name, user_email, password, created_at, updated_at, is_seller, is_deleted, num_items_bought, num_items_sold, wallet_balance, first_name, last_name, address, state, city, pincode FROM users WHERE user_id = ? AND password = ?";
-        return jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
-            int id = rs.getInt("user_id");
-            String userName = rs.getString("user_name");
-            String userEmail = rs.getString("user_email");
-            String userPassword = rs.getString("password");
-            Timestamp createdAt = rs.getTimestamp("created_at");
-            Timestamp updatedAt = rs.getTimestamp("updated_at");
-            boolean isSeller = rs.getBoolean("is_seller");
-            boolean isDeleted = rs.getBoolean("is_deleted");
-            int numItemsBought = rs.getInt("num_items_bought");
-            int numItemsSold = rs.getInt("num_items_sold");
-            double walletBalance = rs.getDouble("wallet_balance");
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            String address = rs.getString("address");
-            String state = rs.getString("state");
-            String city = rs.getString("city");
-            String pincode = rs.getString("pincode");
-
-            return new User(id, userName, userEmail, userPassword, createdAt, updatedAt, isSeller, isDeleted,
-                    numItemsBought, numItemsSold, walletBalance, firstName, lastName, address, state, city, pincode);
-        }, userId, password);
+        return jdbcTemplate.queryForObject(query, new UserMapper(), userId, password);
     }
 
     public boolean isUserExists(String userEmail, int userId) {
@@ -156,17 +129,17 @@ public class UserDAO {
         if (user == null) {
             return 0;
         }
-        int userId = user.getUserId();
-        String query = "SELECT COUNT(*) FROM Cart WHERE user_id = ? and is_bought = 0";
-        return jdbcTemplate.queryForObject(query, Integer.class, userId);
+        
+        String sql = "SELECT COUNT(*) AS cartItemCount FROM Cart WHERE user_id = ? AND is_bought = 0 ";
+        return jdbcTemplate.queryForObject(sql, Integer.class, user.getUserId());
     }
 
     public int getWishlistItemCount(User user) {
         if (user == null) {
             return 0;
         }
-        int userId = user.getUserId();
-        String query = "SELECT COUNT(*) FROM Wishlist WHERE user_id = ? and is_deleted = 0";
-        return jdbcTemplate.queryForObject(query, Integer.class, userId);
+        String sql = "SELECT COUNT(*) FROM wishlist WHERE user_id = ? ";
+        return jdbcTemplate.queryForObject(sql, Integer.class, user.getUserId());
     }
+
 }

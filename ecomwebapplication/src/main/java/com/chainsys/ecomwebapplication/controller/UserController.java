@@ -1,5 +1,6 @@
 package com.chainsys.ecomwebapplication.controller;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,9 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chainsys.ecomwebapplication.dao.UserDAO;
 import com.chainsys.ecomwebapplication.model.User;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
@@ -52,7 +57,7 @@ public class UserController {
 	                               @RequestParam("user_name") String userName,
 	                               @RequestParam("user_email") String userEmail,
 	                               @RequestParam("password") String password,
-	                               Model model) {
+	                               RedirectAttributes redirectAttributes) {
 
 	        User user = new User();
 	        user.setUserId(userId);
@@ -66,23 +71,45 @@ public class UserController {
 	            boolean isEmailSent = userDAO.sendWelcomeEmail(user);
 
 	            if (isEmailSent) {
-	                // Set attributes for success status and message
-	                model.addAttribute("status", "success");
-	                model.addAttribute("message", "Registration Successful!");
-
-	                // Redirect to home.jsp with success status
-	                return "redirect:/home";
+	                redirectAttributes.addFlashAttribute("status", "success");
+	                redirectAttributes.addFlashAttribute("message", "Registration Successful!");
+	                return "home.jsp";
 	            } else {
-	                // Handle email sending failure
-	                model.addAttribute("status", "failure");
-	                model.addAttribute("message", "Failed to send welcome email. Please try again.");
+	                redirectAttributes.addFlashAttribute("status", "failure");
+	                redirectAttributes.addFlashAttribute("message", "Failed to send welcome email. Please try again.");
 	                return "redirect:/registration?registration=email_failure";
 	            }
 	        } else {
-	            // Handle user insertion failure
-	            model.addAttribute("status", "failure");
-	            model.addAttribute("message", "Failed to register user. Please try again.");
+	            redirectAttributes.addFlashAttribute("status", "failure");
+	            redirectAttributes.addFlashAttribute("message", "Failed to register user. Please try again.");
 	            return "redirect:/registration?registration=db_failure";
 	        }
 	    }
+	 
+	 @PostMapping("/login")
+	    public String userLogin(HttpSession session, @RequestParam("userId") int userId, @RequestParam("password") String password, Model model) {
+	        try {
+	            User user = userDAO.getUserByIdAndPassword(userId, password);
+	            if (user != null) {
+	                session.setAttribute("user", user);
+	                return "home.jsp";
+	            } else {
+	                model.addAttribute("status", "failed");
+	                return "LoginForm.jsp";
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            model.addAttribute("status", "error");
+	            return "redirect:/LoginForm.jsp";
+	        }
+	    }
+	 @PostMapping("/logout")
+	 public String userLogout(HttpSession session, HttpServletRequest request) {
+		 session = request.getSession(false);
+		 if(session != null) {
+			 session.invalidate();
+		 }
+		 
+		 return "redirect:/home.jsp";
+	 }
 }

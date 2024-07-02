@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <!-- Bootstrap CSS -->
+    
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- SweetAlert2 CSS -->
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-        /* Custom styles */
+        
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -81,7 +81,7 @@
                 <div class="card">
                     <h5 class="card-header">Login</h5>
                     <div class="card-body">
-                        <form id="loginForm" action="LoginServlet" method="POST">
+                        <form id="loginForm" action="login" method="POST">
                             <div class="form-group">
                                 <label for="userId">User ID</label>
                                 <input type="text" class="form-control" id="userId" name="userId" required pattern="[0-9]{4}">
@@ -108,15 +108,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- SweetAlert2 JS -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Custom JS -->
+    
     <script>
-        // Retrieve status from URL query parameters
+        
         const urlParams = new URLSearchParams(window.location.search);
         const status = urlParams.get('status');
-
-        // If status is failed, show SweetAlert popup
+        
         if (status === 'failed') {
             Swal.fire({
                 icon: 'error',

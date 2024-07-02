@@ -1,17 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page
-	import="java.util.Base64, java.sql.*, java.io.*, java.util.*"%>	
-<%@page import="com.chainsys.ecomwebapplication.model.User"%>
-<%@page import="com.chainsys.ecomwebapplication.dao.UserDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.sql.*"%>
+<%@ page import="com.chainsys.ecomwebapplication.model.User"%>
+<%@ page import="com.chainsys.ecomwebapplication.dao.UserDAO"%>
+<%@ page import="org.springframework.web.context.WebApplicationContext"%>
+<%@ page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 
 <%
-UserDAO userDAO = new UserDAO(); 
-User user = (User) session.getAttribute("user");
-boolean isLoggedIn = (user != null);
+    WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 
-int cartItemCount = userDAO.getCartItemCount(user);
-int wishlistItemCount = userDAO.getWishlistItemCount(user);
+    UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+
+    User user = (User) session.getAttribute("user");
+
+    boolean isLoggedIn = (user != null);
+
+    int cartItemCount = 0;
+    int wishlistItemCount = 0;
+
+    if (isLoggedIn) {
+        cartItemCount = userDAO.getCartItemCount(user);
+        wishlistItemCount = userDAO.getWishlistItemCount(user);
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -276,6 +285,8 @@ int wishlistItemCount = userDAO.getWishlistItemCount(user);
 </head>
 <body>
 
+	<input type="hidden" id="status" value="${status}">
+	<input type="hidden" id="message" value="${message}">
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 		<div class="container-fluid">
 			<div class="nav-left d-flex">
@@ -341,7 +352,7 @@ int wishlistItemCount = userDAO.getWishlistItemCount(user);
 					<%
 					} else {
 					%>
-					<form action="LogoutServlet" method="post">
+					<form action="logout" method="post">
 						<button class="btn btn-secondary" type="submit" name="logout">Logout</button>
 					</form>
 					<%
@@ -510,7 +521,9 @@ int wishlistItemCount = userDAO.getWishlistItemCount(user);
     </script>
 
 	<script>
-        var registrationStatus = '<%= request.getAttribute("status") %>';
+    document.addEventListener('DOMContentLoaded', function () {
+        var registrationStatus = document.getElementById('status').value;
+        var message = document.getElementById('message').value;
 
         if (registrationStatus === 'success') {
             Swal.fire({
@@ -524,11 +537,10 @@ int wishlistItemCount = userDAO.getWishlistItemCount(user);
                 }
             });
         } else if (registrationStatus === 'failure') {
-            var errorMessage = '<%= request.getAttribute("message") %>';
             Swal.fire({
                 icon: 'error',
                 title: 'Registration Failed!',
-                text: errorMessage,
+                text: message,
                 allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -536,7 +548,8 @@ int wishlistItemCount = userDAO.getWishlistItemCount(user);
                 }
             });
         }
-    </script>
+    });
+</script>
 	<script>
     const clouds = document.querySelectorAll('.clouds img');
     const container1 = document.querySelector('.container1');
