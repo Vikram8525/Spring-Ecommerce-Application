@@ -6,9 +6,9 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 
 <%
-    WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 
-    UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+	UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 
     User user = (User) session.getAttribute("user");
 
@@ -285,8 +285,11 @@
 </head>
 <body>
 
-	<input type="hidden" id="status" value="${status}">
-	<input type="hidden" id="message" value="${message}">
+    <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
+    <input type="hidden" id="statu" value="<%= request.getAttribute("statu") %>">
+    <input type="hidden" id="statuss" value="<%= request.getAttribute("statuss") %>">
+    <input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
+    
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 		<div class="container-fluid">
 			<div class="nav-left d-flex">
@@ -469,11 +472,10 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
-        <%if (request.getAttribute("status") != null) {%>
-            var status = '<%=request.getAttribute("status")%>';
-            var message = '<%=request.getAttribute("message")%>';
+        var status = document.getElementById('statuss').value;
+    var message = document.getElementById('message').value;
 
-            if (status === "success") {
+            if (status === "successs") {
                 Swal.fire({
                     icon: 'success',
                     title: 'Profile Updated Successfully!',
@@ -486,7 +488,26 @@
                     text: message
                 });
             }
-        <%}%>
+        
+    </script>
+    <script>
+        var status = document.getElementById('statu').value;
+    var message = document.getElementById('message').value;
+
+            if (status === "successss") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product added Successfully!',
+                    text: message
+                });
+            } else if (status === "error") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Upload Product!',
+                    text: message
+                });
+            }
+        
     </script>
 	<script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -521,34 +542,33 @@
     </script>
 
 	<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var registrationStatus = document.getElementById('status').value;
-        var message = document.getElementById('message').value;
+    // Get the status and message from hidden inputs
+    var registrationStatus = document.getElementById('status').value;
+    var errorMessage = document.getElementById('message').value;
 
-        if (registrationStatus === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Registration Successful!',
-                text: 'You have been successfully registered.',
-                allowOutsideClick: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'AddProfile.jsp'; // Redirect to appropriate page
-                }
-            });
-        } else if (registrationStatus === 'failure') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Registration Failed!',
-                text: message,
-                allowOutsideClick: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'RegistrationForm.jsp'; // Redirect to appropriate page
-                }
-            });
-        }
-    });
+    if (registrationStatus === 'success') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful!',
+            text: 'You have been successfully registered.',
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'AddProfile.jsp'; // Redirect to appropriate page
+            }
+        });
+    } else if (registrationStatus === 'failure') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed!',
+            text: errorMessage,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'RegistrationForm.jsp'; // Redirect to appropriate page
+            }
+        });
+    }
 </script>
 	<script>
     const clouds = document.querySelectorAll('.clouds img');

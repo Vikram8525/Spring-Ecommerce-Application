@@ -8,10 +8,8 @@
     <title>Login Page</title>
     
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-        
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -86,6 +84,8 @@
                                 <label for="userId">User ID</label>
                                 <input type="text" class="form-control" id="userId" name="userId" required pattern="[0-9]{4}">
                             </div>
+                            <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
+							<input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\">
@@ -94,6 +94,7 @@
                         </form>
                     </div>
                 </div>
+                
                 <!-- Register Button -->
                 <form class="form" action="register">
                     <button class="btn" type="submit" id="registerBtn">Register
@@ -112,23 +113,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const status = urlParams.get('status');
-        
+    document.addEventListener('DOMContentLoaded', function() {
+        var status = document.getElementById('status').value;
+
         if (status === 'failed') {
             Swal.fire({
                 icon: 'error',
-                title: 'Wrong username or password!',
+                title: 'Wrong userID or password!',
                 text: 'Your login failed!'
             });
         } else if (status === 'error') {
+            var message = document.getElementById('message').value || 'There was an error processing your request. Please try again later.';
             Swal.fire({
                 icon: 'error',
                 title: 'Server Error',
-                text: 'There was an error processing your request. Please try again later.'
+                text: message
             });
         }
+    });
 
         const registerBtn = document.getElementById('registerBtn');
 
