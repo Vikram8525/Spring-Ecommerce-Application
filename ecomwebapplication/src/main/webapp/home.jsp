@@ -287,6 +287,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 
     <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
     <input type="hidden" id="statu" value="<%= request.getAttribute("statu") %>">
+    <input type="hidden" id="stat" value="<%= request.getAttribute("stat") %>">
     <input type="hidden" id="statuss" value="<%= request.getAttribute("statuss") %>">
     <input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
     
@@ -315,7 +316,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 			</div>
 
 			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-				<form class="d-flex mx-auto" action="SearchServlet" method="POST"
+				<form class="d-flex mx-auto" action="ViewProduct.jsp" method="POST"
 					role="search">
 					<input class="form-control me-2" name="searchValue" type="search"
 						placeholder="Search" aria-label="Search">
@@ -485,6 +486,25 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
                 Swal.fire({
                     icon: 'error',
                     title: 'Failed to Update Profile!',
+                    text: message
+                });
+            }
+        
+    </script>
+    <script>
+        var status = document.getElementById('stat').value;
+    var message = document.getElementById('message').value;
+
+            if (status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Successfully changed!',
+                    text: message
+                });
+            } else if (status === "error") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to change, Try again!',
                     text: message
                 });
             }

@@ -1,5 +1,6 @@
 package com.chainsys.ecomwebapplication.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ public class ProductController {
 
 	@Autowired
 	ProductDAO productDAO;
+
 	
 	@PostMapping("/addProduct")
     public String addProduct(@RequestParam("user_id") int userId,
@@ -160,6 +162,37 @@ public class ProductController {
 	        }
 
 	        return "SellerViewProducts.jsp";
+	    }
+	 
+	 
+	 @PostMapping("/sellerlogin")
+	    public String processLogin(
+	            @RequestParam("userId") String userId,
+	            @RequestParam("password") String password,
+	            Model model) {
+
+	        try {
+	            String result = productDAO.processLogin(userId, password);
+
+	            if ("success".equals(result)) {
+	                model.addAttribute("stat", "success");
+	                model.addAttribute("message", "You have successfully became a part of us!");
+	                return "home.jsp";
+	            } else if ("failed".equals(result)) {
+	                model.addAttribute("stat", "failed");
+	                model.addAttribute("message", "Login failed. Please check your credentials.");
+	                return "SellerLogin.jsp";
+	            } else {
+	                model.addAttribute("stat", "error");
+	                model.addAttribute("message", "Unknown error occurred.");
+	                return "SellerLogin.jsp";
+	            }
+	        } catch (Exception e) {
+	            model.addAttribute("stat", "error");
+	            model.addAttribute("message", "Error: " + e.getMessage());
+	            e.printStackTrace();
+	            return "SellerLogin.jsp";
+	        }
 	    }
 	 
 	 

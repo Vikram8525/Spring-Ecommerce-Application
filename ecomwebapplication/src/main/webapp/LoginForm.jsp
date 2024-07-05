@@ -11,27 +11,82 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffebcd; /* Pale orange background color */
+            margin: 0;
         }
 
-        .card {
-            margin-top: 2rem;
-        }
-
-        .btn-primary {
+        .login-container {
+            display: flex;
             width: 100%;
+            height: 100%;
         }
 
-        .card-header {
-            background-color: #007bff;
+        .login-form-container {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff; /* Left side background color */
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            background-color: #e1e1e1;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-card h5 {
+            background-color: #375864; /* Card header background color (orange) */
             color: #fff;
             text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+        }
+
+        .login-card .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-card .btn-primary,
+        .login-card .btn {
+            width: 100%;
+            background-color: #fe4e5a; /* Button background color (blue) */
+            border-color: #007bff;
+        }
+
+        .login-card .btn-primary:hover,
+        .login-card .btn:hover {
+            background-color: #b71d29;
+            border-color: #b71d29;
+        }
+
+        .image-container {
+            flex: 1;
+            background-image: url('https://img.freepik.com/free-vector/login-concept-illustration_114360-748.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
         }
 
         .btn {
             display: inline-block;
-            margin: 10px;
+            margin: 10px 0;
             padding: 15px 30px;
             font-size: 16px;
             font-weight: 500;
@@ -73,27 +128,23 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div class="card">
-                    <h5 class="card-header">Login</h5>
-                    <div class="card-body">
-                        <form id="loginForm" action="login" method="POST">
-                            <div class="form-group">
-                                <label for="userId">User ID</label>
-                                <input type="text" class="form-control" id="userId" name="userId" required pattern="[0-9]{4}">
-                            </div>
-                            <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
-							<input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
+    <div class="login-container">
+        <div class="login-form-container">
+            <div class="login-card">
+                <h5>Login</h5>
+                <form id="loginForm" action="login" method="POST">
+                    <div class="form-group">
+                        <label for="userId">User ID</label>
+                        <input type="text" class="form-control" id="userId" name="userId" required pattern="[0-9]{4}" placeholder="User ID">
                     </div>
-                </div>
+                    <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
+                    <input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
                 
                 <!-- Register Button -->
                 <form class="form" action="register">
@@ -103,6 +154,7 @@
                 </form>
             </div>
         </div>
+        <div class="image-container"></div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
@@ -113,24 +165,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var status = document.getElementById('status').value;
+        document.addEventListener('DOMContentLoaded', function() {
+            var status = document.getElementById('status').value;
 
-        if (status === 'failed') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Wrong userID or password!',
-                text: 'Your login failed!'
-            });
-        } else if (status === 'error') {
-            var message = document.getElementById('message').value || 'There was an error processing your request. Please try again later.';
-            Swal.fire({
-                icon: 'error',
-                title: 'Server Error',
-                text: message
-            });
-        }
-    });
+            if (status === 'failed') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Wrong userID or password!',
+                    text: 'Your login failed!'
+                });
+            } else if (status === 'error') {
+                var message = document.getElementById('message').value || 'There was an error processing your request. Please try again later.';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: message
+                });
+            }
+        });
 
         const registerBtn = document.getElementById('registerBtn');
 
