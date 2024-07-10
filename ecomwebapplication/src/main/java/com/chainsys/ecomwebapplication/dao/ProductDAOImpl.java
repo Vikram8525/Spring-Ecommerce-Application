@@ -155,7 +155,7 @@ public class ProductDAOImpl implements ProductDAO {
 	 	
 	 	@Override
 	    public List<Product> getFilteredProducts(String productType, double minPrice, double maxPrice, String searchValue) {
-	        StringBuilder query = new StringBuilder("SELECT * FROM Products WHERE product_price BETWEEN ? AND ? AND is_deleted = 0 ");
+	        StringBuilder query = new StringBuilder("SELECT * FROM Products WHERE product_price BETWEEN ? AND ? AND is_deleted = 0 AND product_quantity > 0 ");
 	        List<Object> params = new ArrayList<>();
 	        params.add(minPrice);
 	        params.add(maxPrice);

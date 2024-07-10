@@ -423,7 +423,7 @@ body {
 		<p>
 			Seller:
 			<%=sellerName%></p>
-		<p><form action="CartServlet" method="POST">
+		<p><form action="addToCart" method="POST">
 			<input type="hidden" name="productId" value="<%=productId%>">
     <button class="add-to-cart" type="submit">Add to Cart</button>
 </form>
@@ -432,7 +432,7 @@ body {
 		
                     <p>
                         
-		<form action="WishlistServlet" method="POST">
+		<form action="addToWishlist" method="POST">
                             <input type="hidden" name="productId"
 				value="<%=productId%>">
                             <button class="add-to-wishlist"

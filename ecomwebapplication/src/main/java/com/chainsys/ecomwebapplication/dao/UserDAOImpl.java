@@ -18,9 +18,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.chainsys.ecomwebapplication.mapper.ProductMapper;
 import com.chainsys.ecomwebapplication.mapper.UserMapper;
-import com.chainsys.ecomwebapplication.model.Product;
 import com.chainsys.ecomwebapplication.model.User;
 
 @Repository("userDAO")
