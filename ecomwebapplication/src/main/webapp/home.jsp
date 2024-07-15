@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.sql.*"%>
 <%@ page import="com.chainsys.ecomwebapplication.model.User"%>
 <%@ page import="com.chainsys.ecomwebapplication.dao.UserDAO"%>
@@ -35,12 +36,19 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
+	
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
 	rel="stylesheet">
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
 	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	rel="stylesheet">
+	
+	
+		 
 <style>
         body {
             padding-top: 70px; 
@@ -296,14 +304,14 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
             position: relative;
             perspective: 1100px;
         }
-        #carousel {
+        .character-slider {
             width: 100%;
             height: 100%;
             position: absolute;
             transform-style: preserve-3d;
             transition: transform 1s;
         }
-        figure {
+        .character-slider figure {
             width: 200px;
             height: 240px;
             margin: 0;
@@ -312,21 +320,21 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
             position: absolute;
             cursor: pointer;
             filter: drop-shadow(0 0 20px rgb(0 0 0 / 50%));
-            background-color: #fff;
-            border: 10px solid #fff;
+            background-color: #333;
+            border: 2px solid #fff;
             transition: transform 0.5s, filter 0.5s;
         }
-        img {
+        .character-slider img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             filter: contrast(1) brightness(1);
             transition: transform 0.5s, filter 0.5s;
         }
-        .blurred img {
+        .character-slider .blurred img {
             filter: blur(10px);
         }
-        figure.active img {
+        .character-slider figure.active img {
             transform: scale(2.2) translate(-10%, -10%);
             filter: contrast(1.5);
         }
@@ -338,24 +346,24 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
                 transform: rotateY(-360deg);
             }
         }
-      
-
-#carousel div {
+        .character-slider div {
             position: absolute;
             width: 100px;
             height: 100px;
         }
-        #carousel div:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
-        #carousel div:nth-child(2) { transform: rotateY(45deg) translateZ(400px); }
-        #carousel div:nth-child(3) { transform: rotateY(90deg) translateZ(400px); }
-        #carousel div:nth-child(4) { transform: rotateY(135deg) translateZ(400px); }
-        #carousel div:nth-child(5) { transform: rotateY(180deg) translateZ(400px); }
-        #carousel div:nth-child(6) { transform: rotateY(225deg) translateZ(400px); }
-        #carousel div:nth-child(7) { transform: rotateY(270deg) translateZ(400px); }
-        #carousel div:nth-child(8) { transform: rotateY(315deg) translateZ(400px); }
+        .character-slider div:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
+        .character-slider div:nth-child(2) { transform: rotateY(45deg) translateZ(400px); }
+        .character-slider div:nth-child(3) { transform: rotateY(90deg) translateZ(400px); }
+        .character-slider div:nth-child(4) { transform: rotateY(135deg) translateZ(400px); }
+        .character-slider div:nth-child(5) { transform: rotateY(180deg) translateZ(400px); }
+        .character-slider div:nth-child(6) { transform: rotateY(225deg) translateZ(400px); }
+        .character-slider div:nth-child(7) { transform: rotateY(270deg) translateZ(400px); }
+        .character-slider div:nth-child(8) { transform: rotateY(315deg) translateZ(400px); }
+        
         
         
     </style>
+    
 </head>
 <body>
 
@@ -546,7 +554,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 
 <div class="wrapper">
         <div class="container2">
-            <div id="carousel">
+            <div class="character-slider">
                 <div>
                     <figure>
                         <img src="homeImage/logo1.png" alt="Necromancer">
@@ -592,42 +600,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
     </div>
     
     
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const carousel = document.getElementById('carousel');
-            const figures = carousel.querySelectorAll('figure');
-            let currentIndex = 0;
-            let rotating = true;
-            let rotationInterval;
-
-        function updateCarousel() {
-                if (rotating) {
-                    figures.forEach((figure, index) => {
-                        figure.classList.remove('active', 'blurred');
-                        if (index === currentIndex) {
-                            figure.classList.add('active');
-                        } else {
-                            figure.classList.add('blurred');
-                        }
-                    });
-
-                    const degree = -currentIndex * 45;
-                    carousel.style.transform = `rotateY(${degree}deg)`;
-
-                    currentIndex = (currentIndex + 1) % figures.length;
-
-                    rotating = false;
-                    setTimeout(() => {
-                        rotating = true;
-                    }, 3000);
-                }
-            }
-
-            rotationInterval = setInterval(updateCarousel, 3000);
-
-            updateCarousel();
-        });
-    </script>
+  
 
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -721,7 +694,6 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
     </script>
 
 	<script>
-    // Get the status and message from hidden inputs
     var registrationStatus = document.getElementById('status').value;
     var errorMessage = document.getElementById('message').value;
 
@@ -733,7 +705,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'AddProfile.jsp'; // Redirect to appropriate page
+                window.location.href = 'AddProfile.jsp'; 
             }
         });
     } else if (registrationStatus === 'failure') {
@@ -744,7 +716,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'RegistrationForm.jsp'; // Redirect to appropriate page
+                window.location.href = 'RegistrationForm.jsp'; 
             }
         });
     }
@@ -778,11 +750,45 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
       text.style.marginBottom = `${value * 2}px`;
     });
   </script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
+	
 		
+		
+		<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const slider = document.querySelector('.character-slider');
+            const figures = slider.querySelectorAll('figure');
+            let currentIndex = 0;
+            let rotating = true;
+            let rotationInterval;
+
+            function updateSlider() {
+                if (rotating) {
+                    figures.forEach((figure, index) => {
+                        figure.classList.remove('active', 'blurred');
+                        if (index === currentIndex) {
+                            figure.classList.add('active');
+                        } else {
+                            figure.classList.add('blurred');
+                        }
+                    });
+
+                    const degree = -currentIndex * 45;
+                    slider.style.transform = `rotateY(${degree}deg)`;
+
+                    currentIndex = (currentIndex + 1) % figures.length;
+
+                    rotating = false;
+                    setTimeout(() => {
+                        rotating = true;
+                    }, 3000);
+                }
+            }
+
+            rotationInterval = setInterval(updateSlider, 3000);
+
+            updateSlider();
+        });
+    </script>
 		
 </body>
 </html>
