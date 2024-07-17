@@ -5,7 +5,7 @@
 
 <hr>
 <bold>About:</bold><br>
-  This is my E-commerce Web Application, where shopping meets convenience. Whether you're a Seller showcasing your products or a Customer exploring exciting purchases, our platform offers a seamless experience tailored to meet your needs. Built on robust Java Web Development technologies, we prioritize security, reliability, and user-friendly navigation. Join us in redefining online shopping with innovation and efficiency.
+  The E-commerce Web Application is where shopping meets convenience. Whether you're a Seller showcasing your products or a Customer exploring exciting purchases, our platform offers a seamless experience tailored to meet your needs. Built on robust Java Web Development technologies, we prioritize security, reliability, and user-friendly navigation. Join us in redefining online shopping with innovation and efficiency.
 <hr>
 
 <span style="color:blue">**Modules:-**</span><br>
