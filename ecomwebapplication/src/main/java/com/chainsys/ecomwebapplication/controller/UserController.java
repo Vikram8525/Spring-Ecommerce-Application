@@ -60,6 +60,11 @@ public class UserController {
 	                            @RequestParam("password") String password,
 	                            Model model) {
 
+		 if (userDAO.isUserExists(userEmail,userId)) {
+		        model.addAttribute("status", "failure");
+		        model.addAttribute("message", "User already exists with this E-Mail.");
+		        return "RegistrationForm.jsp";
+		    }
 	     User user = new User();
 	     user.setUserId(userId);
 	     user.setUserName(userName);
@@ -74,16 +79,17 @@ public class UserController {
 	         if (isEmailSent) {
 	             model.addAttribute("status", "success");
 	             model.addAttribute("message", "Registration Successful!");
+	             model.addAttribute("user_id", userId);
 	             return "home.jsp";
 	         } else {
 	             model.addAttribute("status", "failure");
 	             model.addAttribute("message", "Failed to send welcome email. Please try again.");
-	             return "redirect:/registration?registration=email_failure";
+	             return "RegistrationForm.jsp";
 	         }
 	     } else {
 	         model.addAttribute("status", "failure");
 	         model.addAttribute("message", "Failed to register user. Please try again.");
-	         return "redirect:/registration?registration=db_failure";
+	         return "RegistrationForm.jsp";
 	     }
 	 }
 

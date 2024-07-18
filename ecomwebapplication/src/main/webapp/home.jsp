@@ -372,6 +372,7 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
     <input type="hidden" id="stat" value="<%= request.getAttribute("stat") %>">
     <input type="hidden" id="statuss" value="<%= request.getAttribute("statuss") %>">
     <input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
+    <input type="hidden" id="user_id" value="<%= request.getAttribute("user_id") %>">
     
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 		<div class="container-fluid">
@@ -384,7 +385,13 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 					</a>
 				</div>
 				<div id="location">
+				<%
+					if (isLoggedIn) {
+					%>
 					<i class="fa fa-map-marker" aria-hidden="true"></i>
+					<%
+					}
+					%>
 				</div>
 				<div id="glow-ingress-block">
 					<%
@@ -444,11 +451,17 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 					<%
 					}
 					%>
+					<%
+					if (isLoggedIn) {
+					%>
 					<form action="UserDetail.jsp">
 						<button class="btn btn-secondary" type="submit" name="profile">
 							<i class="fa fa-user-plus"></i>
 						</button>
 					</form>
+					<%
+					}
+					%>
 					<form action="ViewCart.jsp">
 						<button class="btn btn-secondary" type="submit" name="cart">
 							<i class="fa fa-shopping-cart"></i>
@@ -696,12 +709,13 @@ WebApplicationContext context = WebApplicationContextUtils.getWebApplicationCont
 	<script>
     var registrationStatus = document.getElementById('status').value;
     var errorMessage = document.getElementById('message').value;
+    var userid = document.getElementById('user_id').value;
 
     if (registrationStatus === 'success') {
         Swal.fire({
             icon: 'success',
             title: 'Registration Successful!',
-            text: 'You have been successfully registered.',
+            text: 'Your user id is :' + userid + '.',
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {

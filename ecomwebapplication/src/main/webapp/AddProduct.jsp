@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Add Product</title>
     <style>
         body {
@@ -14,7 +15,7 @@
         }
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 80px auto; /* Adjusted margin for better alignment */
             background: #fff;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -47,9 +48,59 @@
         .form-group button:hover {
             background: #4cae4c;
         }
+        
+        .navbar {
+    background-color: #232F3E;
+    position: fixed; /* Fixed position to stick to the top */
+    width: 100%; /* Adjusted width to create some space on both sides */
+    top: 0;
+    left: 0;
+   /* Adding left margin */
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px; /* Added padding for better spacing */
+}
+
+        .btn-home {
+            background-color: #232F3E;
+            color: #ffffff;
+            font-size: 20px;
+            border-radius: 5px;
+            padding: 8px 12px;
+            border: none;
+        }
+
+        .btn-home:hover {
+            background-color: #febd69;
+            color: #232F3E;
+        }
+
+        .btn.btn-outline-secondary {
+            color: #ffffff;
+            border-color: #ffffff;
+            margin-left: 10px;
+        }
+
+        .btn.btn-outline-secondary:hover {
+            background-color: #febd69;
+            color: #232F3E;
+        }
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <form action="SellerViewProducts.jsp" method="POST">
+            <button class="btn-home" type="submit" name="home">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+        </form>
+    </div>
+</nav>
 
 <div class="container">
     <h1>Add Product</h1>

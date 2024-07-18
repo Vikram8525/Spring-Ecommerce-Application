@@ -7,11 +7,14 @@
 <head>
     <title>Product Details</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            padding: 20px;
+            padding: 70px;
         }
         .container {
             margin-top: 20px;
@@ -46,9 +49,58 @@
             width: 600px;
             margin-right: 30px;
         }
+        
+        .navbar {
+    background-color: #232F3E;
+}
+
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-home {
+    background-color: #232F3E;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    border: none;
+}
+
+.btn-home:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+
+.btn.btn-outline-secondary {
+    color: #ffffff;
+    border-color: #ffffff;
+    margin-left: 10px;
+}
+
+.btn.btn-outline-secondary:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+        
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <form action="home.jsp" method="POST">
+            <button class="btn-home" type="submit" name="home">
+                <i class="fa fa-home"></i>
+            </button>
+        </form>
+
+        <form action="ViewProduct.jsp" method="GET">
+            <button type="submit" class="btn btn-outline-secondary">View All Products</button>
+        </form>
+    </div>
+</nav>
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">

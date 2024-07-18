@@ -103,7 +103,7 @@ body {
 
 .card {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	max-width: 300px;
+	max-width: 280px;
 	margin: 20px;
 	text-align: center;
 	font-family: arial;
@@ -195,7 +195,7 @@ body {
 
 .nav-icons .btn:hover {
 	background-color: #febd69;
-	color: #232F3E;
+	 color: #232F3E;
 }
 
 .btn-home {

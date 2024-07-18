@@ -1,7 +1,5 @@
 package com.chainsys.ecomwebapplication.dao;
 
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;

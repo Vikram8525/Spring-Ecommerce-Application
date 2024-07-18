@@ -24,9 +24,39 @@ body {
 }
 
 .navbar {
-	background-color: #232F3E;
-	color: #ffffff;
+    background-color: #232F3E;
 }
+
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-home {
+    background-color: #232F3E;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    border: none;
+}
+
+.btn-home:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+
+.btn.btn-outline-secondary {
+    color: #ffffff;
+    border-color: #ffffff;
+    margin-left: 10px;
+}
+
+.btn.btn-outline-secondary:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+
 
 .container {
 	max-width: 600px;
@@ -228,10 +258,14 @@ body {
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="#">YourSite</a>
-		</div>
-	</nav>
+    <div class="container-fluid">
+        <form action="UserDetail.jsp" method="POST">
+            <button class="btn-home" type="submit" name="home">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+        </form>
+    </div>
+</nav>
 
 	<div class="container mt-5">
 		<h2 class="mb-4">Address details for Your orders</h2>

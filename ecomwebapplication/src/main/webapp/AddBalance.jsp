@@ -5,24 +5,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet">
     <title>Payment Methods</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding-top: 0;
             display: flex;
             height: 100vh;
         }
 
         .left-side {
+        padding-top: 80px;
             width: 50%;
-            background-image: url('https://img.freepik.com/free-vector/isometric-composition-with-online-shopping-elements_23-2147674283.jpg?t=st=1718505188~exp=1718505788~hmac=e30317e7be268bb2ac45af87728ace9f39e6845176e41273e474ec50f04133d9'); /* Add your background image here */
+            background-image: url('https://img.freepik.com/free-vector/isometric-composition-with-online-shopping-elements_23-2147674283.jpg?t=st=1718505188~exp=1718505788~hmac=e30317e7be268bb2ac45af87728ace9f39e6845176e41273e474ec50f04133d9');
             background-size: cover;
             background-position: center;
         }
 
         .right-side {
+        padding-top: 80px;
             width: 50%;
             display: flex;
             justify-content: center;
@@ -114,61 +119,109 @@
         form {
             margin: 0;
         }
+        
+        .navbar {
+            background-color: #232F3E;
+            position: fixed; /* Fixed position to stick to the top */
+            width: 100%; /* Full width of the viewport */
+            top: 0;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .navbar .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px; /* Added padding for better spacing */
+        }
+
+        .btn-home {
+            background-color: #232F3E;
+            color: #ffffff;
+            font-size: 20px;
+            border-radius: 5px;
+            padding: 8px 12px;
+            border: none;
+        }
+
+        .btn-home:hover {
+            background-color: #febd69;
+            color: #232F3E;
+        }
+
+        .btn.btn-outline-secondary {
+            color: #ffffff;
+            border-color: #ffffff;
+            margin-left: 10px;
+        }
+
+        .btn.btn-outline-secondary:hover {
+            background-color: #febd69;
+            color: #232F3E;
+        }
     </style>
 </head>
 <body>
-    <div class="left-side"></div>
-    <div class="right-side">
-        <div class="container">
-            <h1>Select Wallet Type</h1>
-            <div class="payment-methods">
-                <form id="amazon-pay-form" action="Wallet.jsp" method="post">
-                    <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-                    <input type="hidden" name="paymentMethod" value="Amazon Pay">
-                    <input type="radio" id="amazon-pay-radio" name="selectedPaymentMethod" value="Amazon Pay" onchange="document.getElementById('amazon-pay-form').submit()">
-                    <label for="amazon-pay-radio" class="payment-method" id="amazon-pay">
-                        <img src="icons/amazon-pay.png" alt="Amazon Pay">
-                        <span>Amazon Pay</span>
-                    </label>
-                </form>
-                <form id="google-pay-form" action="Wallet.jsp" method="post">
-                    <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-                    <input type="hidden" name="paymentMethod" value="Google Pay">
-                    <input type="radio" id="google-pay-radio" name="selectedPaymentMethod" value="Google Pay" onchange="document.getElementById('google-pay-form').submit()">
-                    <label for="google-pay-radio" class="payment-method" id="google-pay">
-                        <img src="icons/google-pay.png" alt="Google Pay">
-                        <span>Google Pay</span>
-                    </label>
-                </form>
-                <form id="credit-card-form" action="Wallet.jsp" method="post">
-                    <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-                    <input type="hidden" name="paymentMethod" value="Credit Card">
-                    <input type="radio" id="credit-card-radio" name="selectedPaymentMethod" value="Credit Card" onchange="document.getElementById('credit-card-form').submit()">
-                    <label for="credit-card-radio" class="payment-method" id="credit-card">
-                        <img src="icons/credit-card.png" alt="Credit Card">
-                        <span>Credit Card</span>
-                    </label>
-                </form>
-                <form id="debit-card-form" action="Wallet.jsp" method="post">
-                    <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-                    <input type="hidden" name="paymentMethod" value="Debit Card">
-                    <input type="radio" id="debit-card-radio" name="selectedPaymentMethod" value="Debit Card" onchange="document.getElementById('debit-card-form').submit()">
-                    <label for="debit-card-radio" class="payment-method" id="debit-card">
-                        <img src="icons/debit-card.png" alt="Debit Card">
-                        <span>Debit Card</span>
-                    </label>
-                </form>
-                <form id="phone-pay-form" action="Wallet.jsp" method="post">
-                    <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
-                    <input type="hidden" name="paymentMethod" value="PhonePe">
-                    <input type="radio" id="phone-pay-radio" name="selectedPaymentMethod" value="PhonePe" onchange="document.getElementById('phone-pay-form').submit()">
-                    <label for="phone-pay-radio" class="payment-method" id="phone-pay">
-                        <img src="icons/phone-pay.png" alt="PhonePe">
-                        <span>PhonePe</span>
-                    </label>
-                </form>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <form action="UserDetail.jsp" method="POST">
+            <button class="btn-home" type="submit" name="home">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+        </form>
+    </div>
+</nav>
+<div class="left-side"></div>
+<div class="right-side">
+    <div class="container">
+        <h1>Select Wallet Type</h1>
+        <div class="payment-methods">
+            <form id="amazon-pay-form" action="Wallet.jsp" method="post">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
+                <input type="hidden" name="paymentMethod" value="Amazon Pay">
+                <input type="radio" id="amazon-pay-radio" name="selectedPaymentMethod" value="Amazon Pay" onchange="document.getElementById('amazon-pay-form').submit()">
+                <label for="amazon-pay-radio" class="payment-method" id="amazon-pay">
+                    <img src="icons/amazon-pay.png" alt="Amazon Pay">
+                    <span>Amazon Pay</span>
+                </label>
+            </form>
+            <form id="google-pay-form" action="Wallet.jsp" method="post">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
+                <input type="hidden" name="paymentMethod" value="Google Pay">
+                <input type="radio" id="google-pay-radio" name="selectedPaymentMethod" value="Google Pay" onchange="document.getElementById('google-pay-form').submit()">
+                <label for="google-pay-radio" class="payment-method" id="google-pay">
+                    <img src="icons/google-pay.png" alt="Google Pay">
+                    <span>Google Pay</span>
+                </label>
+            </form>
+            <form id="credit-card-form" action="Wallet.jsp" method="post">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
+                <input type="hidden" name="paymentMethod" value="Credit Card">
+                <input type="radio" id="credit-card-radio" name="selectedPaymentMethod" value="Credit Card" onchange="document.getElementById('credit-card-form').submit()">
+                <label for="credit-card-radio" class="payment-method" id="credit-card">
+                    <img src="icons/credit-card.png" alt="Credit Card">
+                    <span>Credit Card</span>
+                </label>
+            </form>
+            <form id="debit-card-form" action="Wallet.jsp" method="post">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
+                <input type="hidden" name="paymentMethod" value="Debit Card">
+                <input type="radio" id="debit-card-radio" name="selectedPaymentMethod" value="Debit Card" onchange="document.getElementById('debit-card-form').submit()">
+                <label for="debit-card-radio" class="payment-method" id="debit-card">
+                    <img src="icons/debit-card.png" alt="Debit Card">
+                    <span>Debit Card</span>
+                </label>
+            </form>
+            <form id="phone-pay-form" action="Wallet.jsp" method="post">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") %>">
+                <input type="hidden" name="paymentMethod" value="PhonePe">
+                <input type="radio" id="phone-pay-radio" name="selectedPaymentMethod" value="PhonePe" onchange="document.getElementById('phone-pay-form').submit()">
+                <label for="phone-pay-radio" class="payment-method" id="phone-pay">
+                    <img src="icons/phone-pay.png" alt="PhonePe">
+                    <span>PhonePe</span>
+                </label>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>

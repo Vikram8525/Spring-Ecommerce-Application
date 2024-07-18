@@ -53,17 +53,23 @@
             display: block;
             opacity: 1;
         }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 4px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
     <div class="container mt-5">
         <h2>Register</h2>
-        <form action="registration" method="POST" id="registrationForm">
+        <form action="registration" method="POST" id="registrationForm" onsubmit="return validateForm()">
             <div class="mb-3">
                 <label for="user_id" class="form-label">User ID</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="user_id" name="user_id" readonly>
+                    <input type="text" class="form-control" id="user_id" name="user_id" readonly required>
                     <button type="button" class="btn btn-outline-secondary" onclick="generateUserId()">
                         <i class="fa fa-refresh"></i>
                     </button>
@@ -72,22 +78,29 @@
             <div class="mb-3">
                 <label for="user_name" class="form-label">User Name</label>
                 <input type="text" class="form-control" id="user_name" name="user_name" required pattern="[a-zA-Z_]{3,20}">
+                <div id="user_name_error" class="error"></div>
             </div>
             <div class="mb-3">
                 <label for="user_email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="user_email" name="user_email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                <input type="email" class="form-control" id="user_email" name="user_email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                <div id="user_email_error" class="error"></div>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\&quot;%\\-\`|<>;])[A-Za-z\d!@#$%^&*(),.?\&quot;%\\-\`|<>;]{8,}$">
+                <input type="password" class="form-control" id="password" name="password" required pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}">
+                <div id="password_error" class="error"></div>
             </div>
             <div class="mb-3">
                 <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\&quot;%\\-\`|<>;])[A-Za-z\d!@#$%^&*(),.?\&quot;%\\-\`|<>;]{8,}$">
+                <input type="password" class="form-control" id="confirm_password" required pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}">
+                <div id="confirm_password_error" class="error"></div>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
         <!-- Login Button -->
+        <input type="hidden" id="status" value="<%= request.getAttribute("status") %>">
+        <input type="hidden" id="message" value="<%= request.getAttribute("message") %>">
+    
         <form class="form" action="login">
             <button class="btn" type="submit" id="loginBtn">Login
                 <div class="notification">If you are an existing user, choose me</div>
@@ -105,66 +118,144 @@
             .catch(error => console.error('Error:', error));
     }
 
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-            if (password !== confirmPassword) {
-                alert('Passwords do not match.');
-                e.preventDefault();
-            }
-        });
+    function validateForm() {
+        var isValid = true;
 
-        // Function to handle registration success and failure alerts
-        function showAlert(title, message, icon, redirect) {
+        var userNameInput = document.getElementById('user_name');
+        var userNameError = document.getElementById('user_name_error');
+        if (!/^[a-zA-Z_]{3,20}$/.test(userNameInput.value)) {
+            userNameError.textContent = 'Please enter a valid user name (3-20 characters, letters only).';
+            isValid = false;
+        } else {
+            userNameError.textContent = '';
+        }
+
+        var emailInput = document.getElementById('user_email');
+        var emailError = document.getElementById('user_email_error');
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInput.value)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            isValid = false;
+        } else {
+            emailError.textContent = '';
+        }
+
+        var passwordInput = document.getElementById('password');
+        var passwordError = document.getElementById('password_error');
+        if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}/.test(passwordInput.value)) {
+            passwordError.textContent = 'Password must be at least 8 characters long and include at least one letter, one number, and one special character.';
+            isValid = false;
+        } else {
+            passwordError.textContent = '';
+        }
+
+        var confirmPasswordInput = document.getElementById('confirm_password');
+        var confirmPasswordError = document.getElementById('confirm_password_error');
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            confirmPasswordError.textContent = 'Passwords do not match.';
+            isValid = false;
+        } else {
+            confirmPasswordError.textContent = '';
+        }
+
+        return isValid;
+    }
+
+    document.getElementById('user_name').addEventListener('keyup', function() {
+        validateUserName();
+    });
+
+    document.getElementById('user_email').addEventListener('keyup', function() {
+        validateUserEmail();
+    });
+
+    document.getElementById('password').addEventListener('keyup', function() {
+        validatePassword();
+    });
+
+    document.getElementById('confirm_password').addEventListener('keyup', function() {
+        validateConfirmPassword();
+    });
+
+    function validateUserName() {
+        var userNameInput = document.getElementById('user_name');
+        var userNameError = document.getElementById('user_name_error');
+        if (!/^[a-zA-Z_]{3,20}$/.test(userNameInput.value)) {
+            userNameError.textContent = 'Please enter a valid user name (3-20 characters, letters only).';
+            return false;
+        } else {
+            userNameError.textContent = '';
+            return true;
+        }
+    }
+
+    function validateUserEmail() {
+        var emailInput = document.getElementById('user_email');
+        var emailError = document.getElementById('user_email_error');
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInput.value)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            return false;
+        } else {
+            emailError.textContent = '';
+            return true;
+        }
+    }
+
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var passwordError = document.getElementById('password_error');
+        if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}/.test(passwordInput.value)) {
+            passwordError.textContent = 'Password must be at least 8 characters long and include at least one letter, one number, and one special character.';
+            return false;
+        } else {
+            passwordError.textContent = '';
+            return true;
+        }
+    }
+
+    function validateConfirmPassword() {
+        var confirmPasswordInput = document.getElementById('confirm_password');
+        var confirmPasswordError = document.getElementById('confirm_password_error');
+        if (document.getElementById('password').value !== confirmPasswordInput.value) {
+            confirmPasswordError.textContent = 'Passwords do not match.';
+            return false;
+        } else {
+            confirmPasswordError.textContent = '';
+            return true;
+        }
+    }
+    document.getElementById('user_name').addEventListener('blur', function() {
+        if (validateUserName()) {
+            document.getElementById('user_email').disabled = false;
+        }
+    });
+
+    document.getElementById('user_email').addEventListener('blur', function() {
+        if (validateUserEmail()) {
+            document.getElementById('password').disabled = false;
+        }
+    });
+
+    document.getElementById('password').addEventListener('blur', function() {
+        if (validatePassword()) {
+            document.getElementById('confirm_password').disabled = false;
+        }
+    });
+
+    document.getElementById('confirm_password').addEventListener('blur', function() {
+        validateConfirmPassword();
+    });
+
+    </script>
+    <script>
+        var status = document.getElementById('status').value;
+        var message = document.getElementById('message').value;
+
+        if (status === "failure") {
             Swal.fire({
-                title: title,
-                text: message,
-                icon: icon,
-                confirmButtonText: 'OK',
-                allowOutsideClick: false
-            }).then((result) => {
-                if (result.isConfirmed && redirect) {
-                    window.location.href = redirect;
-                }
+                icon: 'error',
+                title: 'Registration Failed!',
+                text: message
             });
-        }
-
-        // Check for URL parameter 'registration' to show alerts
-        const urlParams = new URLSearchParams(window.location.search);
-        const registration = urlParams.get('registration');
-        if (registration === 'success') {
-            showAlert('Success!', 'Registration successful.', 'success', 'IdMailServlet');
-        } else if (registration === 'failure') {
-            showAlert('Error!', 'Registration failed. Please try again.', 'error', null);
-        } else if (registration === 'user_exists') {
-            showAlert('Error!', 'User ID or email already exists.', 'error', null);
-        }
-
-        const loginBtn = document.getElementById('loginBtn');
-
-        loginBtn.addEventListener('mouseenter', () => {
-            showNotification(loginBtn, 'If you are an existing user, choose me');
-        });
-
-        loginBtn.addEventListener('mouseleave', () => {
-            hideNotification(loginBtn);
-        });
-
-        function showNotification(btn, message) {
-            const notification = btn.querySelector('.notification');
-            notification.innerText = message;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.opacity = '1';
-            }, 10);
-        }
-
-        function hideNotification(btn) {
-            const notification = btn.querySelector('.notification');
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 300);
         }
     </script>
 </body>

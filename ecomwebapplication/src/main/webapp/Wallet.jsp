@@ -111,6 +111,41 @@
         .button-container {
             margin-top: 20px;
         }
+        
+        .navbar {
+    background-color: #232F3E;
+}
+
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-home {
+    background-color: #232F3E;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    border: none;
+}
+
+.btn-home:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+
+.btn.btn-outline-secondary {
+    color: #ffffff;
+    border-color: #ffffff;
+    margin-left: 10px;
+}
+
+.btn.btn-outline-secondary:hover {
+    background-color: #febd69;
+    color: #232F3E;
+}
+        
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
