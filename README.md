@@ -64,7 +64,7 @@
 - MySQL Workbench
 
 
-### ================= E-commerce Web Application Features =================
+### ============== E-commerce Web Application Features ==============
 
 <span style="color:blue">Product Management :</span><br>
 Our platform enables sellers to manage their product listings, including adding new products, updating existing ones, and removing products that are no longer available. Sellers can maintain detailed information such as product descriptions, prices, and availability.
